@@ -1,5 +1,5 @@
 <template>
-    <div class="container  text-center mt-5 mb-5">
+    <div class="container  text-center text-primary mt-5 mb-5">
     <h1 class="mt-5 "> Student's Database </h1>
      <div class="table-responsive my-5">
       
@@ -13,6 +13,7 @@
 <script>
 // Importing the table component
 import Table from './components/Table.vue'
+
 //importing bootstrap 5
 import "bootstrap/dist/css/bootstrap.min.css";
 
