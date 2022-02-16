@@ -1,10 +1,10 @@
 <template>
-    <div class="container  text-center text-primary mt-5 mb-5">
-    <h1 class="mt-5 "> Student's Database </h1>
+    <div class="container text-center  mt-5 mb-5">
+    <h1 class="mt-5 fw-bolder text-success "> Student's Database </h1>
      <div class="table-responsive my-5">
       
       <!-- The table component -->
-       <Table :studentData ="studentData"></Table>
+       <Table :fields='fields' :studentData ="studentData"></Table>
      </div>
  
 </div>
@@ -33,7 +33,11 @@ export default {
       {ID:"05", Name: "Daisy Katherine", Course:"Business studies", Gender:"Female", Age:'22'},  
     ]
 
-    return{studentData}
+    const fields = [
+      'ID','Name','Course','Gender','Age'
+    ]
+
+    return{studentData,fields}
   },
 }
 </script>
@@ -48,3 +52,4 @@ export default {
   margin-top: 60px;
 }
 </style>
+

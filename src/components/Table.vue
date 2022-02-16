@@ -1,59 +1,56 @@
 <template>
-   <table id="tableComponent" class="table table-bordered table-striped">
+
+  <div class="searchBar">
+    <!-- Filter Search -->
+      <div class="input-group mb-5">
+        <input type="search" class="form-control" v-model='filterSearch' placeholder="Student's Name" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-success text-white" type="button" id="button-addon2"  @click="filterTable()">Search</button>
+      </div>
+  </div>
+
+<table id="tableComponent" class="table table-bordered table-striped">
   <thead>
     <tr>
-      <!-- loop through each value of the column property to get the table header -->
-      <th  v-for="col in columns" :key='col' @click="sortTable(col)" > {{col}} <i class="bi bi-sort-alpha-down"></i> </th>
+      <!-- loop through each value of the fields to get the table header -->
+      <th  v-for="field in fields" :key='field' @click="sortTable(field)" > 
+        {{field}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>
+       </th>
     </tr>
   </thead>
   <tbody>
-      <!-- Loop through the list get the each value -->
-      <tr v-for="studentRow in sortedList" :key='studentRow'>
-      <td v-for="col in columns" :key='studentRow[col]'>{{studentRow[col]}}</td>
+      <!-- Loop through the list get the each student data -->
+      <tr v-for="item in sortedList" :key='item'>
+      <td v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
   </tbody>
 </table> 
 </template>
 <script>
-import {computed} from "vue";
-
+import {computed,ref} from "vue";
 export default {
   name: 'TableComponent',
   props:{
       studentData:{
+          type: Array,
+      },
+      fields:{
           type: Array,
       }
   },
   
   setup(props) {
     
-    let sort = false;
-    let updatedList =  []
+    let sort = ref(false);
+    let updatedList =  ref([])
     
-    // The list of values
-     const sortedList = computed(() => {
-        if (sort) {
-         return updatedList
-      }
-      else{
-         return props.studentData;
-      }
-      });
-
-    const columns = computed(() => {
-        if (sortedList.value.length == 0) {
-          return [];
-      }
-      return Object.keys(sortedList.value[0])
-      });
-
+    
+  
    
-
     // a function to sort the table
     const sortTable = (col) => {
-      sort =true
-      updatedList =  props.studentData 
-       updatedList.sort(function(a, b) {
+      sort.value = true
+      updatedList.value =  props.studentData 
+       updatedList.value.sort(function(a, b) {
         if (a[col] > b[col]) {
           return 1;
         } else if (a[col] < b[col]) {
@@ -61,11 +58,20 @@ export default {
         }
         return 0;
       })
+      console.log(sortedList.value)
     }
 
 
+      const sortedList = computed(() => {
+        if (sort.value) {
+         return updatedList.value
+      }
+      else{
+         return props.studentData;
+      }
+      });
 
-  return { columns,sortedList, sortTable}
+  return {sortedList, sortTable}
   }
  
 }
