@@ -3,7 +3,7 @@
   <div class="searchBar">
     <!-- Filter Search -->
       <div class="input-group mb-5">
-        <input type="search" class="form-control" v-model='filterSearch' placeholder="Student's Name" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input type="search" class="form-control" v-model='searchQuery' placeholder="Student's Name" aria-label="Recipient's username" aria-describedby="button-addon2">
         <button class="btn btn-success text-white" type="button" id="button-addon2"  @click="filterTable()">Search</button>
       </div>
   </div>
@@ -19,7 +19,7 @@
   </thead>
   <tbody>
       <!-- Loop through the list get the each student data -->
-      <tr v-for="item in sortedList" :key='item'>
+      <tr v-for="item in filteredList" :key='item'>
       <td v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
   </tbody>
@@ -27,6 +27,9 @@
 </template>
 <script>
 import {computed,ref} from "vue";
+// Importing  the lodash library 
+import { sortBy} from 'lodash';
+
 export default {
   name: 'TableComponent',
   props:{
@@ -39,31 +42,19 @@ export default {
   },
   
   setup(props) {
-    
     let sort = ref(false);
     let updatedList =  ref([])
+    let searchQuery = ref("");
     
-    
-  
-   
-    // a function to sort the table
+        // a function to sort the table
     const sortTable = (col) => {
       sort.value = true
-      updatedList.value =  props.studentData 
-       updatedList.value.sort(function(a, b) {
-        if (a[col] > b[col]) {
-          return 1;
-        } else if (a[col] < b[col]) {
-          return  -1;
-        }
-        return 0;
-      })
-      console.log(sortedList.value)
-    }
+       // Use of _.sortBy() method
+      updatedList.value = sortBy(props.studentData,col)
+      }
 
-
-      const sortedList = computed(() => {
-        if (sort.value) {
+    const sortedList = computed(() => {
+      if (sort.value) {
          return updatedList.value
       }
       else{
@@ -71,7 +62,18 @@ export default {
       }
       });
 
-  return {sortedList, sortTable}
+
+      // Filter Search
+      const filteredList = computed(() => {
+          return sortedList.value.filter((product) => {
+            return (
+              product.Name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1
+            );
+          });
+});   
+      
+
+  return {sortedList, sortTable,searchQuery,filteredList}
   }
  
 }
