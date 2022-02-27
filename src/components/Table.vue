@@ -4,7 +4,6 @@
     <!-- Filter Search -->
       <div class="input-group mb-5">
         <input type="search" class="form-control" v-model='searchQuery' placeholder="Student's Name" aria-label="Recipient's username" aria-describedby="button-addon2">
-        <button class="btn btn-success text-white" type="button" id="button-addon2"  @click="filterTable()">Search</button>
       </div>
   </div>
 
