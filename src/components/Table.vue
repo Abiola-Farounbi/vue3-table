@@ -9,6 +9,7 @@
   </div>
 
 <table id="tableComponent" class="table table-bordered table-striped">
+<caption> A Responsive, Accessible Table Component</caption>
   <thead>
     <tr>
       <!-- loop through each value of the fields to get the table header -->
